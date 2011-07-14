@@ -1,0 +1,135 @@
+#YAML
+#python manage.py loaddata finance/fixtures/fixtures
+
+#shippedProfiles = {
+#    "mint": {
+#        "amountColumn": 4,
+#        "dateColumn": 1,
+#        "dateFormat": "%m/%d/%Y",
+#        "decimalSeparator": ".",
+#        "delimiter": ",",
+#        "descriptionColumns": "2",
+#        "encoding": "utf-8",
+#        "linesToSkip": 1
+#    },
+#    "Sparkasse": {
+#        "amountColumn": 9,
+#        "dateColumn": 2,
+#        "dateFormat": "%d.%m.%y",
+ #       "decimalSeparator": ",",
+ #       "delimiter": ";",
+#        "descriptionColumns": "6, 5 , 4",
+#        "encoding": "utf-8",
+ #       "linesToSkip": 1
+ ##    },
+ #    "comdirect": {
+ #       "amountColumn": 5,
+ #       "dateColumn": 1,
+ #       "dateFormat": "%d.%m.%Y",
+ #       "decimalSeparator": ",",
+ #       "delimiter": ";",
+ #       "descriptionColumns": "4 (3)",
+ #       "encoding": "iso8859-1",
+ #       "linesToSkip": 24
+ #    }
+#}
+
+
+
+# Account Type
+- model: finance.account_type
+  pk: 1
+  fields:
+    name: Debit
+- model: finance.account_type
+  pk: 2
+  fields:
+    name: Crebit
+- model: finance.account_type
+  pk: 3
+  fields:
+    name: Savings
+- model: finance.account_type
+  pk: 4
+  fields:
+    name: Mortgage
+# Category Group
+- model: finance.category_group
+  pk: 1
+  fields:
+    name: Property
+- model: finance.category_group
+  pk: 2
+  fields:
+    name: Incomings    
+- model: finance.category_group
+  pk: 3
+  fields:
+    name: Shopping
+# Category    
+- model: finance.category
+  pk:1
+  fields:
+    name: Mortgage
+    category_group: 1
+- model: finance.category
+  pk:2
+  fields:
+    name: Electricity Supply
+    category_group: 1
+- model: finance.category
+  pk:3
+  fields:
+    name: Gas Supply
+    category_group: 1
+- model: finance.category
+  pk:4
+  fields:
+    name: Water Supply
+    category_group: 2
+- model: finance.category
+  pk:5
+  fields:
+    name: Council Tax
+    category_group: 2
+- model: finance.category
+  pk:6
+  fields:
+    name: TV Licence
+    category_group: 2
+- model: finance.category
+  pk:7
+  fields:
+    name: Pay
+    category_group: 2
+- model: finance.category
+  pk:8
+  fields:
+    name: Food & Drink
+    category_group: 3
+- model: finance.category
+  pk:9
+  fields:
+    name: Night Out
+    category_group: 3
+- model: finance.category
+  pk:10
+  fields:
+    name: Electronics
+    category_group: 3
+- model: finance.category
+  pk:11
+  fields:
+    name: Car
+    category_group: 3
+- model: finance.category
+  pk:12
+  fields:
+    name: Garden
+    category_group: 3
+- model: finance.category
+  pk:13
+  fields:
+    name: Clothes
+    category_group: 3
+  
