@@ -132,4 +132,19 @@
   fields:
     name: Clothes
     category_group: 3
-  
+    
+    
+# Egg Categories:
+
+#As part of your Egg Money statement we've sorted your transactions into eight main spending categories to give you an overview of how your money is being spent.
+
+#Essentials - the things you need for daily living such as food and drink from local stores and supermarkets. Your personal finances are also included.
+#High street & web - less frequent purchases from high street retailers and direct or online stores. This category would include shopping for clothes, books and music.
+#Travel & transport - anything to do with getting around (by car, bus, train or plane). Nights away from home and holiday bookings are also included.
+#Household - household services and anything else you spend on the upkeep of your home.
+#Going out - any spending you make when you go to restaurants, pubs or clubs, plus any leisure activities.
+#Abroad - any transactions made outside the UK.
+#Cash - cash withdrawals from your Egg Money account.
+#Other stuff - anything that's not covered elsewhere, like business expenses or healthcare costs.
+
+# When you're moving money around or making payments into the account, we've left the category line blank because this is not part of your spending.

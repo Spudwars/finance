@@ -25,10 +25,10 @@ class TenancyAgreement(models.Model): #TODO: Inherit from User like UserProfile?
     rent_frequency = models.IntegerField()
     rent_period = models.CharField(max_length=50, choices=Period.LIST) # month/day
 
-    self.deposit_amount = amount = models.DecimalField(max_digits=10,decimal_places=2)
-    self.deposit_paid = models.BooleanField()
-    self.deposit_protection_scheme_submitted = models.DateField() # maybe this should be associated to an item in the statement, i.e. FK to Transaction?
-    self.rentPaidTotal = 0    # clocked up over time
+    deposit_amount = models.DecimalField(max_digits=10,decimal_places=2)
+    deposit_paid = models.BooleanField()
+    deposit_protection_scheme_submitted = models.DateField() # maybe this should be associated to an item in the statement, i.e. FK to Transaction?
+    rentPaidTotal = 0    # clocked up over time
     
     def rent_payments(self):
         return self.category.objects.transaction_set.all()

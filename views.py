@@ -38,6 +38,8 @@ def import_csv(filename, profile, account):
                 rule = None
                 
             trans_date = datetime.strptime(cols[profile.date_pos],profile.date_format) #TODO: improve using a generic date parser which tries different techniques in turn?
+
+            # Check for duplicate transaction - is the import_string line enough
             
             transaction = Transaction(
                 name='', #TODO: create from subsections of transaction?
