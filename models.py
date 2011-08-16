@@ -25,7 +25,10 @@ class CsvImportProfile(models.Model):
     amount_pos = models.IntegerField(help_text='Zero indexed position')
     name_pos = models.IntegerField(help_text='Zero indexed position') # where the name of transaction is
     ##transaction_name_template = models.CharField(max_length=100,help_text='e.g. ${row[4]} from (${row[0]})')
-    date_format = models.CharField(max_length=100,) # samples %d.%m.%Y - link to pydocs!
+    
+    # date_format replaced with dateutil.parser - only we need to know dayfirst / monthfirst!
+    dayfirst = models.BooleanField(default=True) # unless ure in america!
+    ##date_format = models.CharField(max_length=100,) # samples %d.%m.%Y - link to pydocs!
     ##decimal_seperator = models.CharField(max_length=100,choices=Seperator.LIST) #TODO: Not yet supported!
     
     # CSV file settings
@@ -121,16 +124,31 @@ class Transaction(models.Model):
     import_string = models.TextField() # accepts multiline
     account = models.ForeignKey(Account)
     date = models.DateField() # TODO: DateTime?
-    amount = models.DecimalField(max_digits=10,decimal_places=2)
-    creditor = models.CharField(max_length=100,) #?
-    reconceiled = models.BooleanField(default=True) # matched a planned transaction with real data ~ concept of linking planned and possible match of a real transaction which then merges the two together(?)
-    category = models.ManyToManyField(Category, related_)
+    
+    ###payee = models.CharField(max_length=100,) #?
+    ###reconceiled = models.BooleanField(default=True) # matched a planned transaction with real data ~ concept of linking planned and possible match of a real transaction which then merges the two together(?)
+    ###amount = models.DecimalField(max_digits=10,decimal_places=2)
+    ###category = models.ManyToManyField(Category, related_)
 
-    # split tranactions
     # Transfers between accounts -- assign to "Transfer" Category?
     
     # filter on debit / credit / transfer - seperate field (payment_type?) or helper function?
 
+    
+    #!!!!!!!!!!!!!!!!! Still not sure about how to do split transactions !!!!!!!!!
+    # e.g. should the creditor / payee always be in the top section? or can each part go each way?
+    # if it's for a card payment, probably only one way - cash however, could be split afterwards!
+class TransactionAmount(models.Model):
+    """ All monitory parts are stored in TransactionAmounts so that transactions can be split
+    """
+    transaction = models.ForeignKey(Transaction)
+    category = models.ManyToManyField(Category, related_)
+    amount = models.DecimalField(max_digits=10,decimal_places=2)
+    ###creditor = models.CharField(max_length=100,) #replaced with Payee
+    payee = models.CharField(max_length=100)
+    reconceiled = models.BooleanField(default=True) # matched a planned transaction with real data ~ concept of linking planned and possible match of a real transaction which then merges the two together(?)
+    description = models.TextField() #TODO rename to Notes or Memo?
+    
 class RecurringTransaction(models.Model):
     # inherit from Transaction? add frequency, start and end dates etc.
     pass
