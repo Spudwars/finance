@@ -54,7 +54,8 @@ def import_csv(filename, profile, account):
     #TODO: Use csv reader / dict reader
     
     with open(filename) as csv_file:
-        transactions = parse_csv(csv_file, profile, account)
+        ##transactions = parse_csv(csv_file, profile, account)
+        transactions = parse_csv_v2(csv_file, profile, account)
         
     for t in transactions:
         # create and save Transactions in DB

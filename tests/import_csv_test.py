@@ -16,7 +16,7 @@ SAMPLE_CSV = """\
 """
 
 
-class TestImportQif(TestCase):
+class TestImportCsv(TestCase):
     def setUp(self):
         pass
     

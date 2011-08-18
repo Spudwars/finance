@@ -1,4 +1,5 @@
 from unittest import TestCase
+from datetime import datetime
 
 from finance.parse_qif import parse_qif
 
@@ -66,18 +67,18 @@ class TestImportQif(TestCase):
              'amount_in_split': [-253.63999999999999, -746.36000000000001],
              'category': '[linda]',
              'category_in_split': ['[linda]', 'Mort Int'],
-             'date': datetime.datetime(1994, 6, 1, 0, 0),
+             'date': datetime(1994, 6, 1, 0, 0),
              'import_string': 'D6/ 1/94\nT-1,000.00\nN1005\nPBank Of Mortgage\nL[linda]\nS[linda]\n$-253.64\nSMort Int\n$-746.36\n^\n',
              'number': '1005',
              'payee': 'Bank Of Mortgage'},
             {'amount': 75.0,
-             'date': datetime.datetime(1994, 6, 2, 0, 0),
+             'date': datetime(1994, 6, 2, 0, 0),
              'import_string': 'D6/ 2/94\nT75.00\nPDeposit\n^\n',
              'payee': 'Deposit'},
             {'address': '',
              'amount': -10.0,
              'category': 'Entertain',
-             'date': datetime.datetime(1994, 6, 3, 0, 0),
+             'date': datetime(1994, 6, 3, 0, 0),
              'import_string': 'D6/ 3/94\nT-10.00\nPJoBob Biggs\nMJ.B. gets bucks\nLEntertain\nA1010 Rodeo Dr.\nAWaco, Tx\nA80505\nA\nA\nA\n^\n',
              'memo': 'J.B. gets bucks',
              'payee': 'JoBob Biggs'}
