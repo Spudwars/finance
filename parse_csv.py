@@ -1,79 +1,52 @@
 # This Python file uses the following encoding: utf-8
 
 import csv
+import logging
 
 # MUST use python-dateutil==1.5 as 2.0 is for python3 and breaks with:
 #TypeError: iter() returned non-iterator of type '_timelex'
 from dateutil.parser import parse
 
-from finance.transaction_match import rule_match
-
-#TODO: Accept only how many lines to skip and return transactions as dicts
-#   - this is v. easy if there's a header row and you use csv.DictReader!!
-#    - storing a real transactions is then done at a higher level
-def parse_csv_v2(csv_stream, skip_rows=0, dayfirst=True):
+def parse_csv(csv_stream, fieldnames, dayfirst=True, skip_rows=0, max_rows=None):
     """
-    csv_stream : file like object supporting .next()
-    skip_rows : number of rows at start of file to skip
+    csv_stream : file like object supporting .read
+    fieldnames : ordered list of fields, e.g.: (None, 'date', 'payee', None, 'amount')
     dayfirst : for parsing dates - False for US dates which are month first
+    skip_rows : number of rows at start of file to skip (e.g. skip one header row)
+    max_rows : read this many rows (excluding any skip_rows)- used for testing file format
+    
+    raises ValueError if there's an issue with parsing any of the rows
     """
-    # use row_mapping upon dictreader or use trial and error:
-    ##row_mapping : either index or col name based:
-       ##[0:parse_dt, 1:None, 2:float, 3:rule_match]
-       ##['date':parse_dt, 'name':None, 'amount':float, 'details':rule_match]
-       
-    # this is try and error:
+    dialect = csv.Sniffer().sniff(csv_stream.read(1024))
+    logging.info("Dialect determined as %s", dialect)
+    csv_stream.seek(0)
+    reader = csv.DictReader(csv_stream, fieldnames=fieldnames, dialect=dialect)
+    
     transactions = []
-    reader = csv.DictReader(csv_stream, fieldnames=None) #TODO: we're using CSV DictReader, so we can accept excel etc...
-    for n in range(skip_rows):
-        reader.next()
-    for row_dict in reader:
-        for key, val in row_dict.iteritems():
-            try:
-                # amount
-                row_dict[key] = float(val)
+    for row_num, row_dict in enumerate(reader):
+        if row_num < skip_rows:
+            continue # skip this row
+        elif max_rows and row_num == max_rows + skip_rows:
+            break # read enough rows now!
+        else:
+            pass # build a new transaction from the row
+        
+        new_row = {}
+        for field in fieldnames:
+            val = row_dict[field]
+            if field == 'amount':
+                new_row[field] = float(val) #TODO: support profile.decimal_seperator, use locale? "fullstop" == '.'
+            elif field == 'date':
+                new_row[field] = parse(val, dayfirst=dayfirst).date() # only take date part
+            elif field == 'payee':
+                new_row[field] = unicode(val, encoding='UTF-8') # read in everything as Unicode UTF-8 to accept £ symbols etc.
+            else:
+                # we're not interested in any other fields used as padding
                 continue
-            except ValueError:
-                pass
-            try:
-                # datetime
-                row_dict[key] = parse(val, dayfirst=dayfirst)
-                continue
-            except ValueError:
-                pass
-            try:
-                row_dict[key] = rule_match(val)
-            except ValueError:
-                pass
-            #cannot cast to new format
-            continue
-        transactions.append(row_dict) #TODO: would a yield of the dict be enough here?
+        ##assert sorted(new_row.keys()) == sorted([f for f in fieldnames if f]), "Not all columns present"
+        if set([f for f in fieldnames if f]) - set(new_row.keys()):
+            raise ValueError("Not all columns present") # TODO: Allow for empty lines in file?
+
+        transactions.append(new_row)
     return transactions
         
-
-
-
-def parse_csv(csv_data, profile, dayfirst=True):
-    """ Returns a list of transaction dictionaries   (????? easier for testing but a bad idea ?????)
-    """
-    transactions = []
-    for n, line in enumerate(csv_data):
-        if not line:
-            break # end of file
-        elif n < profile.data_start_row: #0 indexed
-            # skip intro rows
-            continue
-
-        cols = [col.strip() for col in line.split(profile.column_delimiter)]
-
-        # Check for duplicate transaction - is the import_string line enough
-        transaction = dict(
-            name = cols[profile.name_pos], #TODO: create from subsections of transaction?
-            import_string = line,
-            date = parse(value, dayfirst=dayfirst) ,
-            amount = float(cols[profile.amount_pos]),
-            #creditor='',
-            
-        )
-        transactions.append(transaction)
-    return transactions

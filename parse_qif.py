@@ -64,7 +64,7 @@ def parse_qif(qif_data, dayfirst=True): # date_format='%d/%m/%Y'):
             transactions.append(current_item)
             current_item = {}
         elif field == 'D':
-            current_item['date'] = parse(value, dayfirst=dayfirst) # common
+            current_item['date'] = parse(value, dayfirst=dayfirst).date() # common
         elif field == 'T':
             current_item['amount'] = float(value.replace(',','')) #TODO: Better replacement of thousands - locale.utof not perfect!
         elif field == 'C':
