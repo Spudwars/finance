@@ -1,0 +1,275 @@
+#YAML
+
+# Be sure to pip install PyYAML (http://pyyaml.org/wiki/PyYAML)
+
+# These fixtures should auto load using settings.py, but if not you can load
+# them by hand like this: 
+#python manage.py loaddata finance/fixtures/fixtures
+
+
+# Account Type
+- model: finance.AccountType
+  pk: 1
+  fields:
+    name: Debit
+- model: finance.AccountType
+  pk: 2
+  fields:
+    name: Crebit
+- model: finance.AccountType
+  pk: 3
+  fields:
+    name: Savings
+- model: finance.AccountType
+  pk: 4
+  fields:
+    name: Mortgage
+    
+# Category Group
+- model: finance.CategoryGroup
+  pk: 1
+  fields:
+    name: Property
+- model: finance.CategoryGroup
+  pk: 2
+  fields:
+    name: Incomings    
+- model: finance.CategoryGroup
+  pk: 3
+  fields:
+    name: Shopping
+- model: finance.CategoryGroup
+  pk: 4
+  fields:
+    name: Car
+
+# Category    
+- model: finance.Category
+  pk: 1
+  fields:
+    name: Mortgage
+    category_group: 1
+- model: finance.Category
+  pk: 2
+  fields:
+    name: Electricity Supply
+    category_group: 1
+- model: finance.Category
+  pk: 3
+  fields:
+    name: Gas Supply
+    category_group: 1
+- model: finance.Category
+  pk: 4
+  fields:
+    name: Water Supply
+    category_group: 2
+- model: finance.Category
+  pk: 5
+  fields:
+    name: Council Tax
+    category_group: 2
+- model: finance.Category
+  pk: 6
+  fields:
+    name: TV Licence
+    category_group: 2
+- model: finance.Category
+  pk: 7
+  fields:
+    name: Pay
+    category_group: 2
+- model: finance.Category
+  pk: 8
+  fields:
+    name: Food & Drink
+    category_group: 3
+- model: finance.Category
+  pk: 9
+  fields:
+    name: Night Out
+    category_group: 3
+- model: finance.Category
+  pk: 10
+  fields:
+    name: Electronics
+    category_group: 3
+- model: finance.Category
+  pk: 11
+  fields:
+    name: Petrol
+    category_group: 3
+- model: finance.Category
+  pk: 12
+  fields:
+    name: Garden
+    category_group: 3
+- model: finance.Category
+  pk: 13
+  fields:
+    name: Clothes
+    category_group: 3
+    
+# Egg Categories:
+
+#As part of your Egg Money statement we've sorted your transactions into eight main spending categories to give you an overview of how your money is being spent.
+
+#Essentials - the things you need for daily living such as food and drink from local stores and supermarkets. Your personal finances are also included.
+#High street & web - less frequent purchases from high street retailers and direct or online stores. This category would include shopping for clothes, books and music.
+#Travel & transport - anything to do with getting around (by car, bus, train or plane). Nights away from home and holiday bookings are also included.
+#Household - household services and anything else you spend on the upkeep of your home.
+#Going out - any spending you make when you go to restaurants, pubs or clubs, plus any leisure activities.
+#Abroad - any transactions made outside the UK.
+#Cash - cash withdrawals from your Egg Money account.
+#Other stuff - anything that's not covered elsewhere, like business expenses or healthcare costs.
+
+# When you're moving money around or making payments into the account, we've left the category line blank because this is not part of your spending.
+
+    
+
+
+    
+# CategoryRule
+- model: finance.CategoryRule
+  pk: 1
+  fields:
+    name: Petrol
+    category: 11
+    includes: PETROL
+- model: finance.CategoryRule
+  pk: 2
+  fields:
+    name: Asda Shopping
+    category: 8
+    includes: ASDA SUPERSTORE
+- model: finance.CategoryRule
+  pk: 2
+  fields:
+    name: Tesco Shopping
+    category: 8
+    includes: TESCO
+- model: finance.CategoryRule
+  pk: 3
+  fields:
+    name: Water Supply
+    category: 4
+    includes: WATER
+- model: finance.CategoryRule
+  pk: 4
+  fields:
+    name: Gas
+    category: 3
+    includes: GAS
+- model: finance.CategoryRule
+  pk: 5
+  fields:
+    name: Mortgage
+    category: 1
+    includes: NORTHERN ROCK
+    
+# This is the bread and butter, add more here... but these will be quite customised per user!
+    
+    
+    
+    
+    
+    
+# TransactionType
+- model: finance.TransactionType
+  pk: 1
+  fields:
+    name: Transfer
+    order: 1
+    includes: REGULAR TRANSFER FROM || FASTER PAYMENTS RECEIPT REF || REGULAR TRANSFER PAYMENT TO
+- model: finance.TransactionType
+  pk: 2
+  fields:
+    name: Direct Debit
+    order: 2
+    includes: DIRECT DEBIT PAYMENT TO
+- model: finance.TransactionType
+  pk: 3
+  fields:
+    name: Card Payment
+    order: 3
+    includes: CARD PAYMENT TO
+- model: finance.TransactionType
+  pk: 4
+  fields:
+    name: Cash Withdrawal
+    order: 4
+    includes: CASH WITHDRAWAL AT || CASH OUT AT || WITHDRAWAL
+- model: finance.TransactionType
+  pk: 5
+  fields:
+    name: Interest
+    order: 5
+    includes: INTEREST
+- model: finance.TransactionType
+  pk: 6
+  fields:
+    name: Earnings
+    order: 6
+    includes: BANK GIRO CREDIT REF 
+- model: finance.TransactionType
+  pk: 7
+  fields:
+    name: Bank Credit
+    order: 7
+    includes: CREDIT FROM 
+- model: finance.TransactionType
+  pk: 8
+  fields:
+    name: Bill Payment
+    order: 8
+    includes: BILL PAYMENT TO 
+- model: finance.TransactionType
+  pk: 9
+  fields:
+    name: Cheque Credit
+    order: 9
+    includes: CHEQUE PAID IN AT 
+- model: finance.TransactionType
+  pk: 10
+  fields:
+    name: Cash Credit
+    order: 10
+    includes: CASH PAID IN AT    
+    
+# CsvImportProfile
+- model: finance.CsvImportProfile
+  pk: 1
+  fields:
+    name: Santander CSV
+    order: 1
+    date_pos: 1
+    payee_pos: 2
+    amount_pos: 3
+    data_start_row: 0
+    date_day_first: true
+    decimal_seperator: fullstop
+- model: finance.CsvImportProfile
+  pk: 2
+  fields:
+    name: Mint (un-tested)
+    order: 2
+    date_pos: 2
+    payee_pos: 3
+    amount_pos: 5
+    data_start_row: 1
+    date_day_first: false
+    decimal_seperator: fullstop
+- model: finance.CsvImportProfile
+  pk: 3
+  fields:
+    name: Sparkasse (un-tested) https://bugs.launchpad.net/wxbanker/+bug/434300
+    order: 3
+    date_pos: 1
+    payee_pos: 5
+    amount_pos: 8
+    #transaction_name_template: {payee}, col.4, col.3
+    data_start_row: 1
+    date_day_first: true
+    decimal_seperator: comma
+ 
+ 
